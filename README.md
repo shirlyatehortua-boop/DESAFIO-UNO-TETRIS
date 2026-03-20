@@ -1,56 +1,59 @@
 # Tetris en C++ con Qt — Desafío I Informática II UdeA
 
 ## Descripción
-Implementación de Tetris por consola usando **operaciones a nivel de bits**, **memoria dinámica** y el framework **Qt**, como parte del Desafío I del curso Informática II (Semestre 2026-1, Universidad de Antioquia).
+Implementación del juego Tetris por consola usando operaciones a nivel de bits,
+memoria dinámica y el framework Qt, como parte del Desafío I del curso
+Informática II (Semestre 2026-1, Universidad de Antioquia).
 
-## Estructura del proyecto
-```
-tetris/
-├── tetris.pro   → Archivo de proyecto Qt
-├── main.cpp     → Punto de entrada
-├── Board.h/.cpp → Tablero (lógica de bits por fila)
-├── Piece.h/.cpp → Piezas (7 tetriminos con rotaciones en bits)
-└── Game.h/.cpp  → Motor del juego (colisiones, gravedad, puntaje)
-```
+## ¿Por qué este tablero?
 
-## Características técnicas
-- **Tablero**: 16 × 18, cada fila representada como `uint16_t`
-- **Detección de colisiones**: operaciones `&` y `>>` entre bits de pieza y tablero
-- **Limpieza de filas**: compactación con punteros sobre arreglo dinámico
-- **Rotaciones**: 4 estados por pieza, almacenados en `uint16_t**` (memoria dinámica)
-- **Aleatoriedad**: generador LCG propio (sin `rand()` de STL)
-- **Sin STL**, sin `string`, sin `struct` no autorizada
+Originalmente quería usar el tablero clásico de 10 columnas por 18 filas, que es
+el que recuerdo del Tetris de mi infancia. Sin embargo, el requisito del desafío
+establece que el ancho debe ser estrictamente un múltiplo de 8.
+
+Por eso elegí 16 columnas x 18 filas. Es el múltiplo de 8 más cercano a 10,
+y además da más espacio horizontal al jugador para mover y rotar las piezas.
+
+## ¿Cómo funciona la lógica de bits?
+
+El tablero se representa fila por fila. Cada fila es un uint16_t (2 bytes = 16 bits).
+Cada bit representa una celda: 0 = vacía, 1 = ocupada.
+
+Fila vacía:   0000 0000 0000 0000  = 0x0000
+Fila llena:   1111 1111 1111 1111  = 0xFFFF  (se elimina)
+
+Para detectar colisiones se usa el operador & (AND) entre los bits de la pieza
+y los bits del tablero. Si el resultado es distinto de cero, hay colisión.
+
+## Las piezas y sus colores
+
+Colores asignados según el orden favorito de mi mamá:
+
+I - Linea 1x4    - Azul claro
+O - Cuadrado 2x2 - Rojo
+T - Forma T      - Naranja
+S - Forma S      - Amarillo
+Z - Forma Z      - Verde
+J - Forma J      - Morado
+L - Forma L      - Azul oscuro
 
 ## Controles
-| Tecla | Acción          |
-|-------|-----------------|
-| A     | Mover izquierda |
-| D     | Mover derecha   |
-| S     | Bajar           |
-| W     | Rotar           |
-| Q     | Salir           |
 
-## Compilación
-1. Abrir `tetris.pro` en **Qt Creator**
-2. Build → Run (Ctrl+R)
+A = Mover izquierda
+D = Mover derecha
+S = Bajar
+W = Rotar
+Q = Salir
 
 ## Puntaje
-| Líneas eliminadas | Puntos |
-|-------------------|--------|
-| 1                 | 100    |
-| 2                 | 300    |
-| 3                 | 500    |
-| 4 (Tetris!)       | 800    |
 
-## Colores de las piezas
-Asignados según el orden de colores favoritos 💜
+1 linea  = 100 puntos
+2 lineas = 300 puntos
+3 lineas = 500 puntos
+4 lineas = 800 puntos (Tetris!)
 
-| Pieza | Color       |
-|-------|-------------|
-| I     | Azul claro  |
-| O     | Rojo        |
-| T     | Naranja     |
-| S     | Amarillo    |
-| Z     | Verde       |
-| J     | Morado      |
-| L     | Azul oscuro |
+## Compilación
+
+1. Abrir tetris.pro en Qt Creator
+2. Seleccionar kit Desktop
+3. Presionar Ctrl+R
