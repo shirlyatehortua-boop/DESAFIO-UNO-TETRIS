@@ -14,10 +14,10 @@ int main(int argc, char *argv[]) {
     QTextStream in(stdin);
     QTextStream out(stdout);
 
-    out << "╔══════════════════════════════╗\n";
-    out << "║        T E T R I S           ║\n";
-    out << "║   Informática II - UdeA      ║\n";
-    out << "╚══════════════════════════════╝\n";
+    out << "+==============================+\n";
+    out << "|        T E T R I S           |\n";
+    out << "|   Informatica II - UdeA      |\n";
+    out << "+==============================+\n";
     out << "Tablero: " << BOARD_WIDTH << " x " << BOARD_HEIGHT << "\n";
     out << "Presiona ENTER después de cada acción.\n\n";
     out.flush();
@@ -37,9 +37,8 @@ int main(int argc, char *argv[]) {
             game->processInput(ch.toLatin1());
         }
 
-        // Limpiar pantalla (secuencia ANSI estándar — funciona en Qt Creator)
-        out << "\033[2J\033[H";
-        out.flush();
+        // Limpiar pantalla en Windows
+        system("cls");
 
         game->render();
     }
